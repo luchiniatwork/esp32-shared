@@ -1,7 +1,9 @@
+[blackdog]: https://github.com/luchiniatwork/blackdog
+
 # esp32-shared
 
-These are shared Fennel/Blackdog reusable components and libraries for
-ESP32 projects.
+These are shared [Fennel/Blackdog][blackdog] reusable components and
+libraries for ESP32 projects.
 
 It is to be used as a submodule in a Fennel/Blackdog project with:
 
@@ -16,7 +18,7 @@ $ git submodule init
 ```
 
 Update your `watch-dir!` call to include `esp32-shared/src` and then
-you'll be able to require components like this iin your Fennel code:
+you'll be able to require components like this in your Fennel code:
 
 ``` common-lisp
 (global door (require :door))
