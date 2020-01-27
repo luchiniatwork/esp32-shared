@@ -11,6 +11,8 @@
 - `:pin-mode` - whether the pin is connected to 3v3 (`pio.PULLDOWN`)
   or to GND (`pio.PULLUP`)
 
+- `:core` - which CPU core to use (defaults to 0)
+
 Returns three events `down-event`, triggered when the button is
 depressed, `up-event`, triggered when the button is released, and
 `press-event`, triggered with a full cycle of down->up.
@@ -19,12 +21,14 @@ The returned function `get-state` returns either `:down` or `:up` of
 the current state of the button."
   (let [down-event (event.create)
         up-event (event.create)
-        press-event (event.create)]
+        press-event (event.create)
+        button-pin (. opts :button-pin)
+        pin-mode (. opts :pin-mode)
+        core (or (. opts :core) 0)]
     (var state nil)
     (thread.start
      (fn []
-       (let [button-pin (. opts :button-pin)
-             pin-mode (. opts :pin-mode)]
+       (let []
          (pio.pin.setdir pio.INPUT button-pin)
          (pio.pin.setpull pin-mode button-pin)
          (set state (parse-raw-state (pio.pin.getval button-pin)
@@ -40,7 +44,8 @@ the current state of the button."
                (press-event:broadcast)
                (set state new-state)))
            ;;(tmr.delayms 200)
-           ))))
+           )))
+     2048 20 core "button")
     {:down-event down-event
      :up-event up-event
      :press-event press-event
